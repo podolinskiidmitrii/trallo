@@ -14,10 +14,10 @@ export class User extends Model<User, UserCreationAttribute>{
     @Column({type:DataType.INTEGER, unique: true, autoIncrement: true, primaryKey:true})
     id:number
 
-    @Column({type:DataType.STRING, allowNull:false})
+    @Column({type:DataType.STRING, allowNull:false, unique:false})
     username:string
 
-    @Column({type:DataType.STRING, unique: true})
+    @Column({type:DataType.STRING, unique:false})
     fullname:string
 
     @Column({type:DataType.STRING, unique: true, allowNull:true})

@@ -16,9 +16,9 @@ export class RolesController {
     return this.rolesService.findAll();
   }
 
-  @Get(':id')
-  findByID(@Param('id') id: number) {
-    return this.rolesService.findByID(id);
+  @Get(':value')
+  findByRole(@Param('value') value:string){
+    return this.rolesService.findRoleByName(value)
   }
 
   // @Patch(':id')
@@ -26,8 +26,8 @@ export class RolesController {
   //   return this.rolesService.update(id, updateRoleDto);
   // }
 
-  // @Delete(':id')
-  // remove(@Param('id') id: number) {
-  //   return this.rolesService.remove(id);
-  // }
+  @Delete(':id')
+  remove(@Param('id') id: number) {
+    return this.rolesService.remove(id);
+  }
 }
