@@ -1,10 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel, SequelizeModule } from '@nestjs/sequelize';
-import { Sequelize } from 'sequelize-typescript';
 import { RolesService } from 'src/roles/roles.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
+import { Sequelize } from 'sequelize-typescript';
+import { CreateOptions, Transaction } from 'sequelize/types';
 
 @Injectable()
 export class UsersService {
@@ -12,15 +13,36 @@ export class UsersService {
   constructor(
     @InjectModel(User) private readonly userRepository: typeof User,
     private RolesService:RolesService,
+    private sequelize: Sequelize
   ) { }
 
-  async create(dto: CreateUserDto) {
+  // async create2(dto: CreateUserDto) {
+  //   try {
+  //     await this.sequelize.transaction(async t => {
+  //       const transactionHost = { transaction: t };
+  //       await this.userRepository.create(
+  //           dto,
+  //           transactionHost,
+  //       );
+       
+  //     });
+  //   } catch (err) {
+  //     // Транзакция была отклонена
+  //     // err - это то, что отклонила цепочка промисов, возвращенная в обратный вызов транзакции
+  //   }
+  // }
 
-    const user = await this.userRepository.create<User>(dto);
-    const role = await this.RolesService.findRoleByName('USER')
-    await user.$set('roles', [role.id])
-    user.roles = [role]
+  async create(dto: CreateUserDto, options:CreateOptions = {}) {
+
+    const CreateOptions = Object.assign(options, {}) 
+    
+    const user = await this.userRepository.create<User>(dto, CreateOptions);
+    const role = await this.RolesService.findRoleByName('USER');
+    await user.$set('roles', [role.id], CreateOptions);
+
+    user.roles = [role];
     return user;
+
   }
 
   async getAllUsers() {

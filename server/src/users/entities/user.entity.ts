@@ -1,6 +1,8 @@
 import { BelongsToMany, Column, DataType, Model, Table } from "sequelize-typescript";
 import { Role } from "src/roles/entities/role.entity";
 import { UserRoles } from "src/roles/entities/user-roles.entity";
+import { WorkingPlace } from "src/working-places/entities/working-place.entity";
+import { UserPlaces } from "./user-places.entity";
 
 interface UserCreationAttribute{
     email:string
@@ -34,4 +36,7 @@ export class User extends Model<User, UserCreationAttribute>{
 
     @BelongsToMany(() => Role, ()=> UserRoles)
     roles:Role[]
+
+    @BelongsToMany(() => WorkingPlace, ()=> UserPlaces)
+    places:WorkingPlace[]
 }

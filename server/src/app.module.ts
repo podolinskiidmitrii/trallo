@@ -4,6 +4,8 @@ import {ConfigModule} from '@nestjs/config'
 import { UsersModule } from './users/users.module';
 import { RolesModule } from './roles/roles.module';
 import { AuthModule } from './auth/auth.module';
+import { WorkingPlacesModule } from './working-places/working-places.module';
+import { WorkingDecksModule } from './working-decks/working-decks.module';
 
 
 @Module({
@@ -25,7 +27,9 @@ import { AuthModule } from './auth/auth.module';
         }),
         UsersModule,
         RolesModule,
-        AuthModule
+        AuthModule,
+        WorkingPlacesModule,
+        WorkingDecksModule
     ]
     
 })
