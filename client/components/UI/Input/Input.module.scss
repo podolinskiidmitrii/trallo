@@ -1,0 +1,13 @@
+.Input{
+    padding:10px;
+    outline: none;
+    border:0;
+    border:2px solid #dbdbdb;
+    border-radius: 4px;
+    margin:5px 0;
+
+
+    &:focus-visible{
+        border:2px solid rgb(22, 77, 255, .6);
+    }
+}

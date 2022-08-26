@@ -1,0 +1,19 @@
+.container{
+    display:flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 0 10px;
+    box-sizing: border-box;
+    background-color: white;
+    box-shadow: inset 0 0.5em 1.5em rgb(0 0 0 / 10%), 0 0.125em 0.5em rgb(0 0 0 / 15%);
+}
+
+.menu{
+    color:black;
+    padding:20px 10px;
+
+    & a{
+        padding: 0px 15px;
+        box-sizing: border-box;
+    }
+}
