@@ -13,8 +13,8 @@ import { WorkingPlacesModule } from 'src/working-places/working-places.module';
     JwtModule.register({
       secret: process.env.SECRET_KEY || 'secret_key',
       signOptions: {
-        expiresIn: '48h'
-      }
+        expiresIn: '1h',
+      }, 
     }),
     WorkingPlacesModule
   ],

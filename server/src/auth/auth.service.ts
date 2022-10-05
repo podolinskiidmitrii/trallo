@@ -6,7 +6,6 @@ import * as bcript from 'bcryptjs'
 import { User } from 'src/users/entities/user.entity';
 import { Sequelize } from 'sequelize-typescript';
 import { WorkingPlacesService } from 'src/working-places/working-places.service';
-import { CreateWorkingPlaceDto } from 'src/working-places/dto/create-working-place.dto';
 
 @Injectable()
 export class AuthService {
@@ -16,13 +15,11 @@ export class AuthService {
     private WorkingPlacesService:WorkingPlacesService,
     private jwtService:JwtService,
     private sequelize:Sequelize,
-    ){ }
+  ){ }
 
-  async login(userDto:CreateUserDto) {
-
+  async login(userDto:CreateUserDto):Promise<User> {
     const user = await this.validateUser(userDto)
-    if(user) return this.generateToken(user)
-    
+    return user
   }
 
   async registration(CreateUserDto: CreateUserDto) {
@@ -34,7 +31,7 @@ export class AuthService {
     const password = await bcript.hash(CreateUserDto.password, 5)
     try{
       await this.sequelize.transaction(async t => {
-
+    
             const options = {transaction: t}
             const newUser = await this.UsersService.create({...CreateUserDto, password}, options)
             
@@ -49,25 +46,30 @@ export class AuthService {
             newUser.places = [workingPlace]
             token =  this.generateToken(newUser)
         })
+      return token
+
     }catch(e){
       console.log(e)
     }
-    return token
   }
 
   async validateUser(userDto:CreateUserDto):Promise<User>{
     const user = await this.UsersService.getUserByEmail(userDto.email)
-    const password = await bcript.compare(userDto.password, user.password)
-    if(user && password){
-      return user
+    if(!user){
+      throw new UnauthorizedException({message:'Пользователь с таким email не найден!'})
     }
-    throw new UnauthorizedException({message:'Неверный пароль!'})
+    const password = await bcript.compare(userDto.password, user.password)
+    if(!password){
+      throw new UnauthorizedException({message:'Неверный пароль!'})
+    }
+    return user
   }
 
   generateToken({id, email, roles, fullname, username}:User){
     const payload = {id, email, roles, fullname, username}
     return {
-      token:this.jwtService.sign(payload)
+      access_token: this.jwtService.sign(payload, {secret:process.env.SECRET_ACCESS_KEY ,expiresIn: "1h"}),
+      refresh_token: this.jwtService.sign(payload, {secret:process.env.SECRET_REFRESH_KEY ,expiresIn: "30d"}),
     }
   }
 }

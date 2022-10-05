@@ -6,5 +6,4 @@ export interface IUser{
     password:string
     ip:string
     ban:boolean
-
 }

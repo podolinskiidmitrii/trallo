@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@reduxjs/toolkit": "^1.8.5",
+    "axios": "^0.27.2",
     "next": "12.2.3",
     "next-redux-wrapper": "^7.0.5",
     "node-sass": "^7.0.1",
