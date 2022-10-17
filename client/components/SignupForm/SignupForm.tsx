@@ -1,4 +1,5 @@
 import React, { FormEvent, SetStateAction, useState } from 'react';
+import { Api } from '../../api';
 import Button from '../UI/Button/Button';
 import { Input } from '../UI/Input';
 import s from './SignupForm.module.scss'
@@ -7,7 +8,7 @@ import s from './SignupForm.module.scss'
 const SignupForm:React.FC = () =>{
 
     const [email, setEmail] = useState<string>('')
-    const [userName, setUserName] = useState<string>('')
+    const [username, setUserName] = useState<string>('')
     const [fullname, setFullname] = useState<string>('')
     const [password, setPassword] = useState<string>('')
 
@@ -28,6 +29,12 @@ const SignupForm:React.FC = () =>{
     }
 
     const onSubmit = () =>{
+        const ap = Api().auth.registration({
+            email,
+            username,
+            fullname,
+            password
+        })
     }
  
     return (

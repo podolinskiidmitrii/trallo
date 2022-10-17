@@ -16,7 +16,7 @@ export class User extends Model<User, UserCreationAttribute>{
     @Column({type:DataType.INTEGER, unique: true, autoIncrement: true, primaryKey:true})
     id:number
 
-    @Column({type:DataType.STRING, allowNull:false, unique:false})
+    @Column({type:DataType.STRING, allowNull:false, unique:true})
     username:string
 
     @Column({type:DataType.STRING, unique:false})

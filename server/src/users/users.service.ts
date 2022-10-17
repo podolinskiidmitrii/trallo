@@ -12,7 +12,7 @@ export class UsersService {
 
   constructor(
     @InjectModel(User) private readonly userRepository: typeof User,
-    private RolesService:RolesService,
+    private RolesService: RolesService,
     private sequelize: Sequelize
   ) { }
 
@@ -24,7 +24,7 @@ export class UsersService {
   //           dto,
   //           transactionHost,
   //       );
-       
+
   //     });
   //   } catch (err) {
   //     // Транзакция была отклонена
@@ -32,25 +32,28 @@ export class UsersService {
   //   }
   // }
 
-  async create(dto: CreateUserDto, options:CreateOptions = {}) {
+  async create(dto: CreateUserDto, options: CreateOptions = {}) {
 
-    const CreateOptions = Object.assign(options, {}) 
-    
+    const CreateOptions = Object.assign(options, {})
+
     const user = await this.userRepository.create<User>(dto, CreateOptions);
     const role = await this.RolesService.findRoleByName('USER');
     await user.$set('roles', [role.id], CreateOptions);
 
     user.roles = [role];
     return user;
-
   }
 
   async getAllUsers() {
-    return await this.userRepository.findAll({include:{all:true}})
+    return await this.userRepository.findAll({ include: { all: true } })
   }
 
-  async getUserByEmail(email:string){
-    return await this.userRepository.findOne({where:{email}, include:{all:true}})
+  async getUserByEmail(email: string) {
+    return await this.userRepository.findOne({ where: { email }, include: { all: true } })
+  }
+
+  async getUserByUsername(username: string) {
+    return await this.userRepository.findOne({ where: { username }, include: { all: true } })
   }
 
   async findById(id: number) {
